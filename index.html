@@ -1,0 +1,76 @@
+<link rel="stylesheet" type="text/css" href="css.css">
+<div id="app" class="media-display">
+  <button @click="prev" class="button prev">Prev</button>
+  <button @click="shuffle" class="button shuffle">Shuffle</button>
+  <button @click="next" class="button next">Next</button>
+  
+  <transition-group name="flip-list" class="media-gallery">
+    <figure 
+            class="media-post" 
+            v-for="(image,i) in images" 
+            :key="image" 
+            @click="shift(image)"
+            :style="{ 
+                    '--i': i, 
+                    '--flip-delay': images.length - i 
+                    }">
+      <img :src="image" width="400" height="400" />
+      <figcaption>{{i+1}}</figcaption>
+    </figure>
+  </transition-group>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	new Vue({
+
+  // Mount Vue instance to DOM with `el`
+  // https://vuejs.org/v2/api/#el
+  el: '#app',
+
+  // State with data
+  // http://vuejs.org/v2/guide/instance.html#Data-and-Methods
+  data() {
+    return {
+      images: [
+        'https://source.unsplash.com/ZVKr8wADhpc/400x400',
+        'https://source.unsplash.com/zNU3ErDAbAw/400x400',
+        'https://source.unsplash.com/x-rqS-3Qi10/400x400',
+        'https://source.unsplash.com/tR-hmR1ZGmE/400x400',
+        'https://source.unsplash.com/N8ldzkCZ7yY/400x400',
+        'https://source.unsplash.com/KZa4fREZoKk/400x400',
+        'https://source.unsplash.com/gR_AgAcP7jI/400x400',
+        'https://source.unsplash.com/aG6ByqGXiXg/400x400',
+        'https://source.unsplash.com/Y3quvtI_LJE/400x400'
+      ] 
+    };
+
+  },
+
+  // Method Event Handlers
+  // https://vuejs.org/v2/guide/events.html#Method-Event-Handlers
+  methods: {
+
+    // Move the last item to the beginning of the array
+    prev() {
+      this.images.unshift(this.images.pop());
+    },
+
+    // Randomize the order of items
+    shuffle() {
+      this.images = this.images.
+      sort(() => 0.5 - Math.random()).
+      sort(() => 0.5 - Math.random());
+    },
+
+    // Move the first item to the end of the array
+    next() {
+      this.images.push(this.images.shift());
+    },
+
+    shift(image) {
+      this.images.splice(this.images.indexOf(image), 1);
+      this.images.unshift(image);
+    } 
+  } 
+});
+</script>
